@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateTableConverter {
-    public static Model convertToPojo(final CreateTable table, final String packageName) {
-        final String className = capitalizeFirstLetter(table.getTable().getName());
-        List<Member> members = table.getColumnDefinitions().stream()
+    public static Model convertToModel(final CreateTable table, final String packageName) {
+        final String classType = capitalizeFirstLetter(table.getTable().getName());
+        final String className = table.getTable().getName();
+        final List<Member> members = table.getColumnDefinitions().stream()
                 .map(CreateTableConverter::getMember)
                 .collect(Collectors.toList());
 
-        return new Model(packageName, className, members);
+        return new Model(packageName, classType, className, members);
     }
 
     private static String capitalizeFirstLetter(String text) {

@@ -4,8 +4,7 @@ package org.springbatisbuilder;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import org.springbatisbuilder.converter.CreateTableConverter;
-import org.springbatisbuilder.generator.ModelGenerator;
-import org.springbatisbuilder.generator.RepositoryInterfaceGenerator;
+import org.springbatisbuilder.generator.*;
 import org.springbatisbuilder.model.Model;
 import org.springbatisbuilder.parser.SqlFileReader;
 
@@ -36,10 +35,14 @@ public class Main {
         final String filePath = getResourceAbsolutePath("/example.sql");
         // TODO handle errors from casting and different DDL options
         final CreateTable createTable = (new SqlFileReader(filePath)).read();
-        final Model model = CreateTableConverter.convertToPojo(createTable, packageName);
+        final Model model = CreateTableConverter.convertToModel(createTable, packageName);
         // TODO use a common generator
         new ModelGenerator().generate(model);
         new RepositoryInterfaceGenerator().generate(model);
+        new MapperInterfaceGenerator().generate(model);
+        new RespositoryImplGenerator().generate(model);
+        new ServiceGenerator().generate(model);
+        new ControllerGenerator().generate(model);
 
         LOGGER.info("Done.");
     }

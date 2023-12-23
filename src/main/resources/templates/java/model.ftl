@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder(setterPrefix = "with")
 @AllArgsConstructor
 @NoArgsConstructor
-class ${model.className()} {
+class ${model.classType()} {
     <#list model.members() as member>
     private ${member.clazz().getSimpleName()} ${member.name()};
     </#list>

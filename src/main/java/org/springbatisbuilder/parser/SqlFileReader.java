@@ -26,16 +26,7 @@ public class SqlFileReader {
 
         if (statement instanceof CreateTable createTable) {
             String tableName = createTable.getTable().getName();
-
-            LOGGER.info("Table Name: " + tableName);
-            LOGGER.info("Columns:");
-            createTable.getColumnDefinitions()
-                    .forEach(column -> {
-
-                        LOGGER.info("Column Name: " + column.getColumnName() +
-                                ", Data Type: " + column.getColDataType());
-
-                    });
+            LOGGER.info("Table Name found: " + tableName);
 
             return createTable;
         } else {
