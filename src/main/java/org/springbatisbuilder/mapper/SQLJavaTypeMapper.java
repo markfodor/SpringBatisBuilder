@@ -1,5 +1,10 @@
 package org.springbatisbuilder.mapper;
 
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.sql.Clob;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +13,19 @@ public class SQLJavaTypeMapper {
 
     static {
         sqlToJavaTypeMap.put("VARCHAR", String.class);
-        sqlToJavaTypeMap.put("INTEGER", Integer.class);
+        sqlToJavaTypeMap.put("CHAR", String.class);
         // TODO if primary key use UUID
+        sqlToJavaTypeMap.put("INTEGER", Integer.class);
         sqlToJavaTypeMap.put("INT", Integer.class);
         sqlToJavaTypeMap.put("BIGINT", Long.class);
-        // TODO add more here -> date, timestamp, etc...
+        sqlToJavaTypeMap.put("DECIMAL", BigDecimal.class);
+        sqlToJavaTypeMap.put("NUMERIC", BigDecimal.class);
+        sqlToJavaTypeMap.put("BOOLEAN", Boolean.class);
+        sqlToJavaTypeMap.put("DATE", Date.class);
+        sqlToJavaTypeMap.put("TIME", Date.class);
+        sqlToJavaTypeMap.put("TIMESTAMP", Instant.class);
+        sqlToJavaTypeMap.put("BLOB", Blob.class);
+        sqlToJavaTypeMap.put("CLOB", Clob.class);
     }
 
     public static Class<?> getJavaTypeFromSQLType(final String sqlType) {

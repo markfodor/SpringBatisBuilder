@@ -1,5 +1,6 @@
-package org.springbatisbuilder.generator;
+package org.springbatisbuilder.generator.java;
 
+import org.springbatisbuilder.generator.BaseGenerator;
 import org.springbatisbuilder.model.Model;
 
 public class MapperInterfaceGenerator extends BaseGenerator {
@@ -11,7 +12,7 @@ public class MapperInterfaceGenerator extends BaseGenerator {
     }
 
     public void generate(final Model model) {
-        final String javaFileName = model.className() + "Mapper.java";
-        generate(model, TEMPLATE_NAME, javaFileName);
+        final String fileName = model.className() + "Mapper.java";
+        generate(model, TEMPLATE_NAME, fileName);
     }
 }

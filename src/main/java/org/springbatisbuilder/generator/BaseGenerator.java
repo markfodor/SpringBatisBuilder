@@ -3,6 +3,7 @@ package org.springbatisbuilder.generator;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springbatisbuilder.generator.java.ModelGenerator;
 import org.springbatisbuilder.model.Model;
 
 import java.io.BufferedWriter;
@@ -29,7 +30,6 @@ public class BaseGenerator {
     private static final String OUTPUT_FOLDER = "output";
 
     private static final String TEMPLATE_FOLDER = "/templates";
-
 
     final Configuration configuration;
 

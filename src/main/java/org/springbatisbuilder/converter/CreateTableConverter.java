@@ -12,13 +12,14 @@ import java.util.stream.Collectors;
 
 public class CreateTableConverter {
     public static Model convertToModel(final CreateTable table, final String packageName) {
+        final String tableName = table.getTable().getName();
         final String classType = capitalizeFirstLetter(table.getTable().getName());
         final String className = table.getTable().getName();
         final List<Member> members = table.getColumnDefinitions().stream()
                 .map(CreateTableConverter::getMember)
                 .collect(Collectors.toList());
 
-        return new Model(packageName, classType, className, members);
+        return new Model(tableName, packageName, classType, className, members);
     }
 
     private static String capitalizeFirstLetter(String text) {
@@ -29,6 +30,8 @@ public class CreateTableConverter {
     }
 
     private static Member getMember(final ColumnDefinition column) {
+        final String tableFieldName = column.getColumnName();
+        final String tableFieldType = column.getColDataType().getDataType();
         final String memberName = CaseUtils.toCamelCase(column.getColumnName(), false, '_');
         final Class<?> clazz = SQLJavaTypeMapper.getJavaTypeFromSQLType(column.getColDataType().getDataType());
 
@@ -36,6 +39,6 @@ public class CreateTableConverter {
         final boolean isPrimaryKey = columnSpecs != null && columnSpecs.contains("KEY") && columnSpecs.contains("PRIMARY");
         final boolean isForeignKey = false; // TODO
 
-        return new Member(memberName, clazz, isPrimaryKey, isForeignKey);
+        return new Member(memberName, clazz, tableFieldName, tableFieldType, isPrimaryKey, isForeignKey);
     }
 }

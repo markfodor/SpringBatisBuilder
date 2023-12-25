@@ -5,7 +5,13 @@ Experimental project to learn and see how far a template-based generator can go.
 
 - Java 21 or higher
 - Gradle 9.0
+- MyBatis 3 or higher
 
 ## Limitations
- 
-- Plural in the table name is not handled 
+- MyBatis typeHandlers are not supported
+
+## TODO
+- Create general app config
+- Make model imports conditional: if extra param needed only in that case add the import
+- Handle plural form in the table name 
+- finfByForeignKey implementation is missing

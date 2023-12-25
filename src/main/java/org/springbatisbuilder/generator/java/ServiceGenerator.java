@@ -1,5 +1,6 @@
-package org.springbatisbuilder.generator;
+package org.springbatisbuilder.generator.java;
 
+import org.springbatisbuilder.generator.BaseGenerator;
 import org.springbatisbuilder.model.Model;
 
 public class ServiceGenerator  extends BaseGenerator {
@@ -11,7 +12,7 @@ public class ServiceGenerator  extends BaseGenerator {
     }
 
     public void generate(final Model model) {
-        final String javaFileName = model.classType() + "Service.java";
-        generate(model, TEMPLATE_NAME, javaFileName);
+        final String fileName = model.classType() + "Service.java";
+        generate(model, TEMPLATE_NAME, fileName);
     }
 }

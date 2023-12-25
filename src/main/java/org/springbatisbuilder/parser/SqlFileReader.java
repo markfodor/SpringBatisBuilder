@@ -22,7 +22,7 @@ public class SqlFileReader {
 
     public CreateTable read() throws IOException, JSQLParserException {
         final String sqlContent = Files.readString(Paths.get(filePath));
-        Statement statement = CCJSqlParserUtil.parse(sqlContent);
+        final Statement statement = CCJSqlParserUtil.parse(sqlContent);
 
         if (statement instanceof CreateTable createTable) {
             String tableName = createTable.getTable().getName();

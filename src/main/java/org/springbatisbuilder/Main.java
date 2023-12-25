@@ -4,7 +4,8 @@ package org.springbatisbuilder;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import org.springbatisbuilder.converter.CreateTableConverter;
-import org.springbatisbuilder.generator.*;
+import org.springbatisbuilder.generator.java.*;
+import org.springbatisbuilder.generator.xml.MapperGenerator;
 import org.springbatisbuilder.model.Model;
 import org.springbatisbuilder.parser.SqlFileReader;
 
@@ -43,6 +44,8 @@ public class Main {
         new RespositoryImplGenerator().generate(model);
         new ServiceGenerator().generate(model);
         new ControllerGenerator().generate(model);
+
+        new MapperGenerator().generate(model);
 
         LOGGER.info("Done.");
     }
