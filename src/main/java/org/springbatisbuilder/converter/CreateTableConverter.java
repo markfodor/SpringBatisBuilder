@@ -2,6 +2,7 @@ package org.springbatisbuilder.converter;
 
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
+import net.sf.jsqlparser.statement.create.table.Index;
 import org.apache.commons.text.CaseUtils;
 import org.springbatisbuilder.mapper.SQLJavaTypeMapper;
 import org.springbatisbuilder.model.Member;
@@ -15,8 +16,10 @@ public class CreateTableConverter {
         final String tableName = table.getTable().getName();
         final String classType = capitalizeFirstLetter(table.getTable().getName());
         final String className = table.getTable().getName();
+        final List<Index> indexes = table.getIndexes();
+
         final List<Member> members = table.getColumnDefinitions().stream()
-                .map(CreateTableConverter::getMember)
+                .map(columnDefinition -> getMember(columnDefinition, indexes))
                 .collect(Collectors.toList());
 
         return new Model(tableName, packageName, classType, className, members);
@@ -29,16 +32,35 @@ public class CreateTableConverter {
         return Character.toUpperCase(text.charAt(0)) + text.substring(1);
     }
 
-    private static Member getMember(final ColumnDefinition column) {
+    private static Member getMember(final ColumnDefinition column, final List<Index> indexes) {
+        final List<String> columnSpecs = column.getColumnSpecs();
+
         final String tableFieldName = column.getColumnName();
         final String tableFieldType = column.getColDataType().getDataType();
         final String memberName = CaseUtils.toCamelCase(column.getColumnName(), false, '_');
-        final Class<?> clazz = SQLJavaTypeMapper.getJavaTypeFromSQLType(column.getColDataType().getDataType());
 
-        final List<String> columnSpecs = column.getColumnSpecs();
-        final boolean isPrimaryKey = columnSpecs != null && columnSpecs.contains("KEY") && columnSpecs.contains("PRIMARY");
-        final boolean isForeignKey = false; // TODO
+        final boolean isPrimaryKey = isPrivateKey(columnSpecs);
+        final boolean isForeignKey = isForeignKey(tableFieldName, indexes);
+
+        final Class<?> clazz = SQLJavaTypeMapper.getJavaTypeFromSQLType(column.getColDataType().getDataType(), isPrimaryKey || isForeignKey);
 
         return new Member(memberName, clazz, tableFieldName, tableFieldType, isPrimaryKey, isForeignKey);
+    }
+
+    private static boolean isPrivateKey(final List<String> columnSpecs) {
+        return columnSpecs != null && columnSpecs.contains("PRIMARY") && columnSpecs.contains("KEY");
+    }
+
+    private static boolean isForeignKey(final String tableFieldName, final List<Index> indexes) {
+        if (indexes == null) {
+            return false;
+        }
+
+        return indexes.stream().anyMatch(index -> index.getType().equals("FOREIGN KEY")
+                && hasMatchingColumnParam(tableFieldName, index.getColumns()));
+    }
+
+    private static boolean hasMatchingColumnParam(final String param, final List<Index.ColumnParams> columnParams) {
+        return columnParams.stream().anyMatch(columnParam -> columnParam.getColumnName().equals(param));
     }
 }

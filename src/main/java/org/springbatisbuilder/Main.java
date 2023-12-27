@@ -4,8 +4,8 @@ package org.springbatisbuilder;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import org.springbatisbuilder.converter.CreateTableConverter;
-import org.springbatisbuilder.generator.java.*;
-import org.springbatisbuilder.generator.xml.MapperGenerator;
+import org.springbatisbuilder.generator.Generator;
+import org.springbatisbuilder.model.GeneratorInput;
 import org.springbatisbuilder.model.Model;
 import org.springbatisbuilder.parser.SqlFileReader;
 
@@ -37,16 +37,21 @@ public class Main {
         // TODO handle errors from casting and different DDL options
         final CreateTable createTable = (new SqlFileReader(filePath)).read();
         final Model model = CreateTableConverter.convertToModel(createTable, packageName);
-        // TODO use a common generator
-        new ModelGenerator().generate(model);
-        new RepositoryInterfaceGenerator().generate(model);
-        new MapperInterfaceGenerator().generate(model);
-        new RespositoryImplGenerator().generate(model);
-        new ServiceGenerator().generate(model);
-        new ControllerGenerator().generate(model);
 
-        new MapperGenerator().generate(model);
+        LOGGER.info("Table mapped.");
 
+        final Generator generator = new Generator(model)
+                .withInput(new GeneratorInput("java/model.ftl", getOutputFileName(model, null), "java"))
+                .withInput(new GeneratorInput("java/controller.ftl", getOutputFileName(model, "Controller"), "java"))
+                .withInput(new GeneratorInput("java/mapperInterface.ftl", getOutputFileName(model, "Mapper"), "java"))
+                .withInput(new GeneratorInput("java/repositoryInterface.ftl", getOutputFileName(model, "Repository"), "java"))
+                .withInput(new GeneratorInput("java/repositoryImpl.ftl", getOutputFileName(model, "RepositoryImpl"), "java"))
+                .withInput(new GeneratorInput("java/service.ftl", getOutputFileName(model, "Service"), "java"))
+                .withInput(new GeneratorInput("xml/mapper.ftl", getOutputFileName(model, "Mapper"), "xml"));
+
+        LOGGER.info("Templates added.");
+
+        generator.generate();
         LOGGER.info("Done.");
     }
 
@@ -58,6 +63,10 @@ public class Main {
         }
 
         return Paths.get(resource.toURI()).toFile().getAbsolutePath();
+    }
+
+    private static String getOutputFileName(final Model model,  final String outputFileEnding) {
+        return model.classType() + (outputFileEnding == null ? "" : outputFileEnding);
     }
 
 }

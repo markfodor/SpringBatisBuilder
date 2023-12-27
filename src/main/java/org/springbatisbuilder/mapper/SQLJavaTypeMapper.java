@@ -7,14 +7,15 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SQLJavaTypeMapper {
     private static final Map<String, Class<?>> sqlToJavaTypeMap = new HashMap<>();
 
     static {
         sqlToJavaTypeMap.put("VARCHAR", String.class);
+        sqlToJavaTypeMap.put("VARCHAR2", String.class);
         sqlToJavaTypeMap.put("CHAR", String.class);
-        // TODO if primary key use UUID
         sqlToJavaTypeMap.put("INTEGER", Integer.class);
         sqlToJavaTypeMap.put("INT", Integer.class);
         sqlToJavaTypeMap.put("BIGINT", Long.class);
@@ -28,8 +29,18 @@ public class SQLJavaTypeMapper {
         sqlToJavaTypeMap.put("CLOB", Clob.class);
     }
 
-    public static Class<?> getJavaTypeFromSQLType(final String sqlType) {
-        // TODO handle if not found and throw error? -> think about it if it is enough to log an error and keep it empty
-        return sqlToJavaTypeMap.get(sqlType);
+    public static Class<?> getJavaTypeFromSQLType(final String sqlType, final boolean isKey) {
+        Class<?> clazz = sqlToJavaTypeMap.get(sqlType);
+
+        if (clazz == null) {
+            throw new RuntimeException("Can not map SQL type: " + sqlType);
+        }
+
+        // force UUID if it is a primary or foreign key
+        if (isKey) {
+            clazz = UUID.class;
+        }
+
+        return clazz;
     }
 }

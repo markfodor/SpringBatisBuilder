@@ -15,3 +15,5 @@ Experimental project to learn and see how far a template-based generator can go.
 - Make model imports conditional: if extra param needed only in that case add the import
 - Handle plural form in the table name 
 - finfByForeignKey implementation is missing
+- handle space-padding -> call TRIM in the mapper xml
+- add UuidTypeHandler if UUID is used as a member type
