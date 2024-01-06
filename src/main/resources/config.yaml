@@ -1,0 +1,8 @@
+inputFile: /example.sql
+templateFolder: /templates
+outputFolder: output
+
+# The Java comment you would like to see at the top of every java file
+comment: Example comment.
+# Package name you would like to use for the generated files
+packageName: com.example

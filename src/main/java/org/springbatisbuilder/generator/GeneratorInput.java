@@ -1,4 +1,4 @@
-package org.springbatisbuilder.model;
+package org.springbatisbuilder.generator;
 
 public record GeneratorInput (
         String inputTemplatePath,

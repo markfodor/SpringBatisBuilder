@@ -9,10 +9,16 @@ import org.springbatisbuilder.model.Member;
 import org.springbatisbuilder.model.Model;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateTableConverter {
-    public static Model convertToModel(final CreateTable table, final String packageName) {
+
+    private final CreateTable table;
+
+    public CreateTableConverter(CreateTable table) {
+        this.table = table;
+    }
+
+    public Model convertToModel(final String packageName, final String comment) {
         final String tableName = table.getTable().getName();
         final String classType = capitalizeFirstLetter(table.getTable().getName());
         final String className = table.getTable().getName();
@@ -20,19 +26,19 @@ public class CreateTableConverter {
 
         final List<Member> members = table.getColumnDefinitions().stream()
                 .map(columnDefinition -> getMember(columnDefinition, indexes))
-                .collect(Collectors.toList());
+                .toList();
 
-        return new Model(tableName, packageName, classType, className, members);
+        return new Model(tableName, comment, packageName, classType, className, members);
     }
 
-    private static String capitalizeFirstLetter(String text) {
+    private String capitalizeFirstLetter(final String text) {
         if (text == null || text.isEmpty()) {
             return text;
         }
         return Character.toUpperCase(text.charAt(0)) + text.substring(1);
     }
 
-    private static Member getMember(final ColumnDefinition column, final List<Index> indexes) {
+    private Member getMember(final ColumnDefinition column, final List<Index> indexes) {
         final List<String> columnSpecs = column.getColumnSpecs();
 
         final String tableFieldName = column.getColumnName();
@@ -47,11 +53,11 @@ public class CreateTableConverter {
         return new Member(memberName, clazz, tableFieldName, tableFieldType, isPrimaryKey, isForeignKey);
     }
 
-    private static boolean isPrivateKey(final List<String> columnSpecs) {
+    private boolean isPrivateKey(final List<String> columnSpecs) {
         return columnSpecs != null && columnSpecs.contains("PRIMARY") && columnSpecs.contains("KEY");
     }
 
-    private static boolean isForeignKey(final String tableFieldName, final List<Index> indexes) {
+    private boolean isForeignKey(final String tableFieldName, final List<Index> indexes) {
         if (indexes == null) {
             return false;
         }
@@ -60,7 +66,7 @@ public class CreateTableConverter {
                 && hasMatchingColumnParam(tableFieldName, index.getColumns()));
     }
 
-    private static boolean hasMatchingColumnParam(final String param, final List<Index.ColumnParams> columnParams) {
+    private boolean hasMatchingColumnParam(final String param, final List<Index.ColumnParams> columnParams) {
         return columnParams.stream().anyMatch(columnParam -> columnParam.getColumnName().equals(param));
     }
 }

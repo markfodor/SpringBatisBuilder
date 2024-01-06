@@ -7,7 +7,7 @@
     </#if>
 </#list>
 /**
-* ${comment}
+* ${model.comment()}
 */
 
 package ${model.packageName()};

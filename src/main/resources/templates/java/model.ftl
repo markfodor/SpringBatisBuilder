@@ -1,16 +1,17 @@
 /**
-* ${comment}
+* ${model.comment()}
 */
 
 package ${model.packageName()};
 
 // TODO delete unused imports
-mport java.math.BigDecimal;
+import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

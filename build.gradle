@@ -19,6 +19,8 @@ dependencies {
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.16.1'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.16.1'
 }
 
 

@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public class SQLJavaTypeMapper {
@@ -29,11 +30,13 @@ public class SQLJavaTypeMapper {
         sqlToJavaTypeMap.put("CLOB", Clob.class);
     }
 
+    private SQLJavaTypeMapper() { }
+
     public static Class<?> getJavaTypeFromSQLType(final String sqlType, final boolean isKey) {
         Class<?> clazz = sqlToJavaTypeMap.get(sqlType);
 
         if (clazz == null) {
-            throw new RuntimeException("Can not map SQL type: " + sqlType);
+            throw new NoSuchElementException("Can not map SQL type: " + sqlType);
         }
 
         // force UUID if it is a primary or foreign key
