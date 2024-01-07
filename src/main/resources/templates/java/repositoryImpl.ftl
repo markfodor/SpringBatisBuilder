@@ -1,9 +1,13 @@
 <#assign primaryKeyName = "">
 <#assign primaryKeyType = "">
+<#assign primaryKeyImport = "">
 <#list model.members() as member>
     <#if member.isPrimaryKey()>
         <#assign primaryKeyName = member.name()>
         <#assign primaryKeyType = member.clazz().getSimpleName()>
+        <#if !member.clazz().getName()?starts_with("java.lang")>
+            <#assign primaryKeyImport = member.clazz().getName()>
+        </#if>
     </#if>
 </#list>
 /**
@@ -12,10 +16,13 @@
 
 package ${model.packageName()};
 
-import org.apache.ibatis.annotations.Mapper;
-
-import javax.inject.Inject;
+<#if !(primaryKeyImport?length == 0)>
+import ${primaryKeyImport};
+</#if>
 import java.util.List;
+import javax.inject.Inject;
+
+import org.apache.ibatis.annotations.Mapper;
 
 public class ${model.classType()}RepositoryImpl implements ${model.classType()}Repository {
 

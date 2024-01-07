@@ -4,19 +4,13 @@
 
 package ${model.packageName()};
 
-// TODO delete unused imports
-import java.math.BigDecimal;
-import java.sql.Blob;
-import java.sql.Clob;
-import java.time.Instant;
-import java.util.Date;
-import java.util.UUID;
+<#assign members = model.members()>
+<#include "imports.ftl">
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @Builder(setterPrefix = "with")
