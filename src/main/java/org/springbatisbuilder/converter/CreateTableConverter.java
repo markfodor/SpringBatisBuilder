@@ -14,14 +14,14 @@ public class CreateTableConverter {
 
     private final CreateTable table;
 
-    public CreateTableConverter(CreateTable table) {
+    public CreateTableConverter(final CreateTable table) {
         this.table = table;
     }
 
-    public Model convertToModel(final String packageName, final String comment) {
+    public Model convertToModel(final String packageName, final String comment, final boolean useSingularModelName) {
         final String tableName = table.getTable().getName();
-        final String classType = capitalizeFirstLetter(table.getTable().getName());
-        final String className = table.getTable().getName();
+        final String className = useSingularModelName ? convertToSingularForm(tableName) : tableName;
+        final String classType = useSingularModelName ? convertToSingularForm(capitalizeFirstLetter(tableName)) : capitalizeFirstLetter(tableName);
         final List<Index> indexes = table.getIndexes();
 
         final List<Member> members = table.getColumnDefinitions().stream()
@@ -36,6 +36,14 @@ public class CreateTableConverter {
             return text;
         }
         return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+    }
+
+    private String convertToSingularForm(final String text) {
+        if (text != null && text.endsWith("s")) {
+            return text.substring(0, text.length() - 1);
+        }
+
+        return text;
     }
 
     private Member getMember(final ColumnDefinition column, final List<Index> indexes) {

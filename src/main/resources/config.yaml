@@ -1,6 +1,8 @@
 inputFile: /example.sql
 templateFolder: /templates
 outputFolder: output
+# if useSingularModelName is true then it will handle names in singular form (without the 's' at the end of the name)
+useSingularModelName: true
 
 # The Java comment you would like to see at the top of every java file
 comment: Example comment.

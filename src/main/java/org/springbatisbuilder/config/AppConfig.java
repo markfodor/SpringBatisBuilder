@@ -7,6 +7,7 @@ public record AppConfig(
         String inputFile,
         String templateFolder,
         Path outputFolder,
+        boolean useSingularModelName,
         String comment,
         String packageName) {
 }

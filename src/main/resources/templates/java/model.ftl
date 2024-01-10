@@ -4,7 +4,6 @@
 
 package ${model.packageName()};
 
-<#assign members = model.members()>
 <#include "imports.ftl">
 
 import lombok.AllArgsConstructor;

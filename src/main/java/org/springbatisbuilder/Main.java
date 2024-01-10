@@ -10,7 +10,7 @@ import org.springbatisbuilder.generator.Generator;
 import org.springbatisbuilder.generator.GeneratorInput;
 import org.springbatisbuilder.helper.ResourceHelper;
 import org.springbatisbuilder.model.Model;
-import org.springbatisbuilder.parser.SqlFileReader;
+import org.springbatisbuilder.parser.SqlFileParser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,8 +33,8 @@ public class Main {
 
         final AppConfig config = new AppConfigLoader(CONFIG_YAML).load();
         final Path inputFilePath = ResourceHelper.getResourcePath(config.inputFile());
-        final CreateTable createTable = new SqlFileReader(inputFilePath).read();
-        final Model model = new CreateTableConverter(createTable).convertToModel(config.packageName(), config.comment());
+        final CreateTable createTable = new SqlFileParser(inputFilePath).read();
+        final Model model = new CreateTableConverter(createTable).convertToModel(config.packageName(), config.comment(), config.useSingularModelName());
 
         LOGGER.info("Table mapped.");
 

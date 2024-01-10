@@ -26,49 +26,48 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-// TODO implement OpenAPI-generated interface
 class ${model.classType()}Controller {
 
     private final ${model.classType()}Service ${model.className()}Service;
 
     @Inject
-    public ${model.classType()}(final ${model.classType()} ${model.className()}) {
-        this.${model.className()}Service = ${model.className()};
+    public ${model.classType()}(final ${model.classType()}Service ${model.className()}Service) {
+        this.${model.className()}Service = ${model.className()}Service;
     }
 
     // TODO check return type
     @PreAuthorize("hasAuthority('SCOPE_urn:something:whatever')")
-    public ${model.classType()} insert${model.classType()}(@RequestBody ${model.classType()} ${model.className()}) {
-        final int affectedRows = ${model.className()}Repository.insert(${model.className()});
-        // TODO handle error based on return value
+    public ResponseEntity<Void> insert${model.classType()}(@RequestBody ${model.classType()} ${model.className()}) {
+        final int affectedRows = ${model.className()}Service.insert${model.classType()}(${model.className()});
+        // TODO handle error based on affectedRows
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // TODO check return type
     @PreAuthorize("hasAuthority('SCOPE_urn:something:whatever')")
     public ResponseEntity<Void> update${model.classType()}(final ${model.classType()} ${model.className()}) {
-        final int affectedRows = ${model.className()}Repository.update(${model.className()});
-        // TODO handle error based on return value
+        final int affectedRows = ${model.className()}Service.update${model.classType()}(${model.className()});
+        // TODO handle error based on affectedRows
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // TODO check return type and HTTP method for mapping
     @PreAuthorize("hasAuthority('SCOPE_urn:something:whatever')")
     public ResponseEntity<Void> delete${model.classType()}ById(final ${primaryKeyType} ${primaryKeyName}) {
-        final int affectedRows =  ${model.className()}Repository.delete(${primaryKeyName});
-        // TODO handle error based on return value
+        final int affectedRows =  ${model.className()}Service.delete${model.classType()}(${primaryKeyName});
+        // TODO handle error based on affectedRows
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PreAuthorize("hasAuthority('SCOPE_urn:something:whatever')")
-    public ResponseEntity<Void> find${model.classType()}ById(@PathVariable("${primaryKeyName}") ${primaryKeyType} ${primaryKeyName}) {
-        ${model.className()}Repository.findById(${primaryKeyName});
-        // TODO handle return type
+    public ResponseEntity<${model.classType()}> find${model.classType()}ById(@PathVariable("${primaryKeyName}") final ${primaryKeyType} ${primaryKeyName}) {
+        final ${model.classType()} ${model.className()} = ${model.className()}Service.find${model.classType()}ById(${primaryKeyName});
+        return ResponseEntity.status(HttpStatus.OK).body(${model.className()});
     }
 
     @PreAuthorize("hasAuthority('SCOPE_urn:something:whatever')")
-    public ResponseEntity<Void> findAll() {
-        ${model.className()}Repository.findAll();
-        // TODO handle return type
+    public ResponseEntity<List<${model.classType()}>> findAll() {
+        final List<${model.classType()}> ${model.className()}List = ${model.className()}Service.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(${model.className()}List);
     }
 }

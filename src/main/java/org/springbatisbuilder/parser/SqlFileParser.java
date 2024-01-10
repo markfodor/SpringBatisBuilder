@@ -12,12 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class SqlFileReader {
-    private static final Logger LOGGER = Logger.getLogger(SqlFileReader.class.getName());
+public class SqlFileParser {
+    private static final Logger LOGGER = Logger.getLogger(SqlFileParser.class.getName());
 
     private final Path filePath;
 
-    public SqlFileReader(final Path filePath) {
+    public SqlFileParser(final Path filePath) {
         this.filePath = filePath;
     }
 
