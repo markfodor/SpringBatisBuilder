@@ -14,7 +14,7 @@
 * ${model.comment()}
 */
 
-package ${model.packageName()};
+package ${packageName};
 
 <#if !(primaryKeyImport?length == 0)>
 import ${primaryKeyImport};

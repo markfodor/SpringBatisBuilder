@@ -6,5 +6,10 @@ useSingularModelName: true
 
 # The Java comment you would like to see at the top of every java file
 comment: Example comment.
-# Package name you would like to use for the generated files
-packageName: com.example
+# Package names you would like to use for the generated files
+controllerPackageName: com.example
+mapperPackageName: com.example
+modelPackageName: com.example
+repositoryPackageName: com.example
+repositoryImplPackageName: com.example
+servicePackageName: com.example

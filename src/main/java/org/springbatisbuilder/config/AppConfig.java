@@ -9,5 +9,10 @@ public record AppConfig(
         Path outputFolder,
         boolean useSingularModelName,
         String comment,
-        String packageName) {
+        String controllerPackageName,
+        String mapperPackageName,
+        String modelPackageName,
+        String repositoryPackageName,
+        String repositoryImplPackageName,
+        String servicePackageName) {
 }

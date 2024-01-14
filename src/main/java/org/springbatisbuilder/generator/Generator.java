@@ -52,6 +52,7 @@ public class Generator {
                 final Template template = configuration.getTemplate(input.inputTemplatePath());
                 final StringWriter stringWriter = new StringWriter();
                 Map<String, Object> data = new HashMap<>();
+                data.put("packageName", input.packageName());
                 data.put("model", model);
 
                 template.process(data, stringWriter);

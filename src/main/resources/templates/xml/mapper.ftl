@@ -14,9 +14,9 @@
 </#list>
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${model.packageName()}.${model.classType()}">
+<mapper namespace="${packageName}.${model.classType()}">
 
-    <resultMap id="${model.className()}ResultMap" type="${model.packageName()}.${model.classType()}">
+    <resultMap id="${model.className()}ResultMap" type="${packageName}.${model.classType()}">
     <#list model.members() as member>
         <result property="${member.name()}" column="${member.tableFieldName()}" javaType="${member.clazz().getName()}" />
     </#list>

@@ -18,7 +18,7 @@ public class CreateTableConverter {
         this.table = table;
     }
 
-    public Model convertToModel(final String packageName, final String comment, final boolean useSingularModelName) {
+    public Model convertToModel(final String comment, final boolean useSingularModelName) {
         final String tableName = table.getTable().getName();
         final String className = useSingularModelName ? convertToSingularForm(tableName) : tableName;
         final String classType = useSingularModelName ? convertToSingularForm(capitalizeFirstLetter(tableName)) : capitalizeFirstLetter(tableName);
@@ -28,7 +28,7 @@ public class CreateTableConverter {
                 .map(columnDefinition -> getMember(columnDefinition, indexes))
                 .toList();
 
-        return new Model(tableName, comment, packageName, classType, className, members);
+        return new Model(tableName, comment, classType, className, members);
     }
 
     private String capitalizeFirstLetter(final String text) {

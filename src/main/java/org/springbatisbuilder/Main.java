@@ -34,18 +34,18 @@ public class Main {
         final AppConfig config = new AppConfigLoader(CONFIG_YAML).load();
         final Path inputFilePath = ResourceHelper.getResourcePath(config.inputFile());
         final CreateTable createTable = new SqlFileParser(inputFilePath).read();
-        final Model model = new CreateTableConverter(createTable).convertToModel(config.packageName(), config.comment(), config.useSingularModelName());
+        final Model model = new CreateTableConverter(createTable).convertToModel(config.comment(), config.useSingularModelName());
 
         LOGGER.info("Table mapped.");
 
         final Generator generator = new Generator(config.templateFolder(), config.outputFolder(), model)
-                .withInput(new GeneratorInput("java/model.ftl", ResourceHelper.getOutputFileName(model, null), "java"))
-                .withInput(new GeneratorInput("java/controller.ftl", ResourceHelper.getOutputFileName(model, "Controller"), "java"))
-                .withInput(new GeneratorInput("java/mapperInterface.ftl", ResourceHelper.getOutputFileName(model, "Mapper"), "java"))
-                .withInput(new GeneratorInput("java/repositoryInterface.ftl", ResourceHelper.getOutputFileName(model, "Repository"), "java"))
-                .withInput(new GeneratorInput("java/repositoryImpl.ftl", ResourceHelper.getOutputFileName(model, "RepositoryImpl"), "java"))
-                .withInput(new GeneratorInput("java/service.ftl", ResourceHelper.getOutputFileName(model, "Service"), "java"))
-                .withInput(new GeneratorInput("xml/mapper.ftl", ResourceHelper.getOutputFileName(model, "Mapper"), "xml"));
+                .withInput(new GeneratorInput("java/model.ftl", config.modelPackageName(), ResourceHelper.getOutputFileName(model, null), "java"))
+                .withInput(new GeneratorInput("java/controller.ftl", config.controllerPackageName(), ResourceHelper.getOutputFileName(model, "Controller"), "java"))
+                .withInput(new GeneratorInput("java/mapperInterface.ftl", config.mapperPackageName(), ResourceHelper.getOutputFileName(model, "Mapper"), "java"))
+                .withInput(new GeneratorInput("java/repositoryInterface.ftl", config.repositoryPackageName(), ResourceHelper.getOutputFileName(model, "Repository"), "java"))
+                .withInput(new GeneratorInput("java/repositoryImpl.ftl", config.repositoryImplPackageName(), ResourceHelper.getOutputFileName(model, "RepositoryImpl"), "java"))
+                .withInput(new GeneratorInput("java/service.ftl", config.servicePackageName(), ResourceHelper.getOutputFileName(model, "Service"), "java"))
+                .withInput(new GeneratorInput("xml/mapper.ftl", config.modelPackageName(), ResourceHelper.getOutputFileName(model, "Mapper"), "xml"));
 
         LOGGER.info("Templates added.");
 

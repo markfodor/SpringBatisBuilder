@@ -2,7 +2,7 @@
 * ${model.comment()}
 */
 
-package ${model.packageName()};
+package ${packageName};
 
 <#include "imports.ftl">
 

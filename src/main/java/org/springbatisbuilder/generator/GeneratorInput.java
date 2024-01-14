@@ -2,6 +2,7 @@ package org.springbatisbuilder.generator;
 
 public record GeneratorInput (
         String inputTemplatePath,
+        String packageName,
         String outputFileName,
         String outputFilExtension
 ) {
