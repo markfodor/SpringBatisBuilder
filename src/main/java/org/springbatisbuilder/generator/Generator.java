@@ -16,8 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class Generator {
 
@@ -47,6 +49,8 @@ public class Generator {
     }
 
     public void generate() {
+        createOutputFolder();
+
         for (GeneratorInput input : inputs) {
             try {
                 final Template template = configuration.getTemplate(input.inputTemplatePath());
@@ -56,7 +60,6 @@ public class Generator {
                 data.put("model", model);
 
                 template.process(data, stringWriter);
-
                 writeToFile(stringWriter.toString(), input.getFile());
                 LOGGER.log(Level.INFO, "File generated: {0}", input.getFile());
             } catch (final IOException | TemplateException e) {
@@ -67,8 +70,6 @@ public class Generator {
     }
 
     private void writeToFile(String content, String fileName) throws IOException {
-        createOutputFolder();
-
         final String filePath = Paths.get(PROJECT_ROOT, outputFolder.getFileName().toString(), fileName).toString();
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(content);
@@ -76,13 +77,34 @@ public class Generator {
     }
 
     private void createOutputFolder() {
-        if (!Files.exists(outputFolder)) {
+        if (Files.exists(outputFolder)) {
+            deleteOutputFolderContent();
+        }
+        else {
             try {
                 Files.createDirectory(outputFolder);
             } catch (final IOException e) {
                 LOGGER.log(Level.SEVERE, "Unable to create the folder: {0}", outputFolder.getFileName());
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
+        }
+    }
+
+    private void deleteOutputFolderContent() {
+        try (Stream<Path> paths = Files.walk(outputFolder)) {
+            paths.filter(path -> !path.equals(outputFolder))
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(path -> {
+                        try {
+                            Files.delete(path);
+                            LOGGER.log(Level.FINE, "File deleted: {0}", path.getFileName());
+                        } catch (IOException e) {
+                            LOGGER.log(Level.SEVERE, "Not able to delete file/dir: {0}", path.getFileName());
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
+                    });
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
