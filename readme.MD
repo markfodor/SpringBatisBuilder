@@ -23,7 +23,7 @@ The templates in the repository are crafted to be used in specific projects, so 
 # Example
 - [App config](./src/main/resources/config.yaml)
 - [Input SQL](./src/main/resources/example.sql)
-- [Output folder](./output) with the generated files
+- [Output folder](./example) with the generated files
 
 # Requirements
 - Java 20+
