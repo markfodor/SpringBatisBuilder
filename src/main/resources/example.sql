@@ -1,4 +1,3 @@
--- Create a table called 'employees'
 CREATE TABLE employees (
     employee_id INT PRIMARY KEY,
     company_id INT FOREIGN KEY,

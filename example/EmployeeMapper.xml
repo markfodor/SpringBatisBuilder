@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.Employee">
+
+    <resultMap id="employeeResultMap" type="com.example.Employee">
+        <result property="employeeId" column="employee_id" javaType="java.util.UUID" />
+        <result property="companyId" column="company_id" javaType="java.util.UUID" />
+        <result property="firstName" column="first_name" javaType="java.lang.String" />
+        <result property="lastName" column="last_name" javaType="java.lang.String" />
+        <result property="department" column="department" javaType="java.lang.String" />
+        <result property="hireDate" column="hire_date" javaType="java.util.Date" />
+    </resultMap>
+
+    <select id="selectById" resultMap="employeeResultMap" useCache="false">
+        SELECT
+            employee_id, 
+            company_id, 
+            first_name, 
+            last_name, 
+            department, 
+            hire_date
+        FROM employees
+        WHERE
+            employee_id = #{ employeeId, javaType=java.util.UUID, jdbcType=INT }
+    </select>
+
+    <insert id="insert">
+        INSERT INTO employees (
+            employee_id, 
+            company_id, 
+            first_name, 
+            last_name, 
+            department, 
+            hire_date
+        ) VALUES (
+            #{ employees.employeeId, javaType=java.util.UUID, jdbctype=INT }, 
+            #{ employees.companyId, javaType=java.util.UUID, jdbctype=INT }, 
+            #{ employees.firstName, javaType=java.lang.String, jdbctype=VARCHAR }, 
+            #{ employees.lastName, javaType=java.lang.String, jdbctype=VARCHAR }, 
+            #{ employees.department, javaType=java.lang.String, jdbctype=VARCHAR2 }, 
+            #{ employees.hireDate, javaType=java.util.Date, jdbctype=DATE }
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE employees
+        SET
+            company_id = #{ companyId }, 
+            first_name = #{ firstName }, 
+            last_name = #{ lastName }, 
+            department = #{ department }, 
+            hire_date = #{ hireDate }
+        WHERE
+            employee_id = #{ employeeId, javaType=java.util.UUID, jdbcType=INT }
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM employees
+        WHERE
+            employee_id = #{ employeeId, javaType=java.util.UUID, jdbcType=INT }
+    </delete>
+</mapper>
